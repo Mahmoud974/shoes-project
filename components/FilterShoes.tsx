@@ -1,5 +1,6 @@
-"use client"
-import React from 'react'
+import { useState } from "react";
+import {RiFilter2Line} from "react-icons/ri"
+import Side from "./Side";
 
 
 type Props = {
@@ -7,21 +8,47 @@ type Props = {
   setSecondPrice:  React.Dispatch<React.SetStateAction<number >>
   setCategory: React.Dispatch<React.SetStateAction<string >>
   setColor: React.Dispatch<React.SetStateAction<string >>
- 
-  
 }
 
-const Side:React.FC<Props> = ({setPrice, setSecondPrice, setCategory, setColor }) => {
+export default function FilterShoes({setPrice, setSecondPrice, setCategory, setColor}:Props) {
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const changePrice = (priceDown: number, priceUp: number) =>{
-  setPrice(priceDown)
-  setSecondPrice(priceUp)
-  
-}
-
-
+    setPrice(priceDown)
+    setSecondPrice(priceUp) 
+  }
   return (
-   <div className='flex flex-col   lg:mr-16 lg:mt-0 mt-12'>
-  <div >
+    <div className="flex items-center justify-center border-gray-400 py-8 order-1 -my-8 ">
+   
+      <nav>
+        <section className="MOBILE-MENU  flex lg:hidden">
+          <div
+            className="HAMBURGER-ICON space-y-2"
+            onClick={() => setIsNavOpen((prev) => !prev)}
+          >
+          <RiFilter2Line className='text-4xl border rounded-md p-2'/>
+          </div>
+
+          <div className={isNavOpen ? "showMenuNav" : "hideMenuNav"}>
+            <div
+              className="absolute top-0 right-0 px-8 py-8"
+              onClick={() => setIsNavOpen(false)}
+            >
+              <svg
+                className="h-8 w-8 text-gray-600"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </div>
+          {/* Filtrer mes éléments */}
+     <div className='flex flex-col lg:mr-16 lg:mt-0 '>
+  <div className="">
  
  <h1 className='md:text-2xl text-md font-bold text-md mb-2'>Categories</h1>
 <form action="">
@@ -64,7 +91,40 @@ const Side:React.FC<Props> = ({setPrice, setSecondPrice, setCategory, setColor }
  </form>
 </div>
 </div>
-  )
-}
+          </div>
+        </section>
 
-export default Side
+        <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
+          <li>
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <a href="/portfolio">Portfolio</a>
+          </li>
+          <li>
+            <a href="/contact">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      <style>{`
+      .hideMenuNav {
+        display: none;
+      }
+      .showMenuNav {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background: #202020;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+    `}</style>
+    </div>
+  );
+}

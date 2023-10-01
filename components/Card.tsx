@@ -1,18 +1,79 @@
+"use client"
 import Image from 'next/image'
-import React from 'react'
-import { Data } from '../db/data'
-import {BiSolidBasket} from 'react-icons/bi'
-import {BsFillSuitHeartFill} from 'react-icons/bs'
-type Props ={
+import React, { useEffect,  useState } from 'react'
+import { Data } from '../module/index';
+import {BiInfoCircle, BiSolidBasket} from 'react-icons/bi'
+import Link from 'next/link';
+
+type Props = {
     article: Data,
     basket: string,
-    setBasket: React.Dispatch<React.SetStateAction<string>>
+    setBasket: React.Dispatch<React.SetStateAction<string>>,
+    setDataFind: React.Dispatch<React.SetStateAction<string >>,
+    setArticle: React.Dispatch<React.SetStateAction<string | undefined>>,
+    dataFind: any,
+    data:any
+   
 }
 
-const Card = ({article,basket, setBasket}: Props) => {
-  //TODO: A faire le setbasket modif
+const Card = ({article, data, setBasket, setDataFind, setArticle }: Props) => {
+const [cart, setCartItems] = useState<Data[]>([])
+const [addProduct, setAddProduct] = useState<boolean>(true)
+
+
+
+const getLocalStorageItem= (key:string)=> {
+  const storedItem = localStorage.getItem(key);
+  return storedItem ? JSON.parse(storedItem) : [];
+}
+
+const setLocalStorageItem= (key:string, data: Data[]) =>{
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+
+
+useEffect(() => {
+  const storedCart = getLocalStorageItem('cart');
+  setCartItems(storedCart);
+}, []);
+
+
+
+const addToCart = (item: Data, title: string) => {
+ 
+  const updatedCart:Data[] = [...cart, item];
+
+const uniqueProduct = updatedCart.filter((produit, index, self) =>
+  index === self.findIndex((p) => (
+    p.id === produit.id &&
+    p.title === produit.title &&
+    p.company === produit.company
+  ))
+);
+  setCartItems(updatedCart);
+  setLocalStorageItem('cart', uniqueProduct);
+
+
+  if (item) {
+    setArticle(title);
+    window.location.reload();
+     setAddProduct(false)
+  }
+};
+
+const deleteCart = () =>{
+   setAddProduct(true)
+    confirm('Voulez vous la supprimez?')
+   
+    
+  }
+
+
   return (
-    <div onClick={()=> setBasket('all')} className="card  w-82 flex h-62 bg-white shadow-xl lg:mr-0  mr-12 cursor-pointer">
+    
+   <div className="card  w-82 flex h-76 bg-white shadow-xl lg:mr-0 md:mx-0 mx-6"  >
+    <div onClick={()=> setBasket('all')} >
 <div className=" py-12 mx-auto flex  justify-center">
     <Image
       src={article.img}
@@ -36,7 +97,7 @@ const Card = ({article,basket, setBasket}: Props) => {
         {article.reviews}
     </span>
    </div>
-    <div className='flex items-center justify-between'>
+    <div className='flex flex-col items-center justify-between'>
         <div>
             <span className='line-through'>
             {article.prevPrice}
@@ -45,16 +106,26 @@ const Card = ({article,basket, setBasket}: Props) => {
            ${article.newPrice}
         </span>
         </div>
-        <div className='text-2xl  flex space-x-2' >
-               <BsFillSuitHeartFill/>
-               <span className='cursor-pointer  hover:text-yellow-400'>
-
-              <BiSolidBasket/>
-               </span>
+        <div className='text-2xl  flex items-center space-x-2' >
+          <Link href={`shoe/${article.id}`} className=' cursor-pointer'>
+          <BiInfoCircle className='hover:text-blue-400'/>
+           </Link>
+         
+              { addProduct ?
+                 <span className='cursor-pointer hover:text-yellow-400'>
+                <BiSolidBasket onClick={() => addToCart(article, article.title)}  />
+              </span> : 
+              <button className='cursor-pointer flex justify-center bg-red-500 rounded-full mx-auto  w-[1.35rem] h-[1.35rem]  text-white text-center items-center font-bold ml-12 text-xs' onClick={() => deleteCart()} >
+                X
+              </button>
+              }
+              
         </div>
     </div>
   </div>
 </div>
+</div>
+  
   )
 }
 
