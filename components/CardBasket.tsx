@@ -2,7 +2,7 @@
 import React, {useEffect,  useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import { Data, totalItems } from '../module/index';
+import { Data, deleteCart, totalItems } from '@module/index';
 
 
 type Props = {
@@ -30,31 +30,7 @@ const storedCart = localStorage.getItem('cart');
   }
 
 },[])
-  const deleteCart = (id:any) =>{
-    let storageShoes: any[] = []; // Définissez un type any pour le moment
 
-const storedCart = localStorage.getItem('cart');
-if (storedCart) {
-  try {
-    storageShoes = JSON.parse(storedCart);
-  } catch (error) {
-    console.error('Error parsing cart data:', error);
-  }
-}
-     const indexASupprimer = storageShoes.findIndex((element:any) => element.id === id);
-
-    if (id !== -1) {
-      storageShoes.splice(indexASupprimer, 1);
-      localStorage.setItem('cart', JSON.stringify(storageShoes));
-      console.log(`Élément avec l'ID ${id} supprimé du tableau.`);
-      // Mettez à jour l'état de votre composant ou effectuez toute autre action nécessaire ici.
-    } else {
-      console.log(`L'élément avec l'ID ${id} n'a pas été trouvé dans le tableau.`);
-    }
-
-  }
-
-console.log(totalItems(cartItems) * 200);
 
 
 setLengthArticle(totalItems(cartItems))
@@ -120,18 +96,8 @@ return (
                 <div className='flex flex-col space-y-2'>
                   <div className='flex space-x-4'>
                   <p>Quantity:</p>
-                  <input
-  type="number"
-  name=""
-  id=""
-  className="w-12"
-  min={1}
-  max={10}
-  value={!quantityItem[Number(findProduct.id)] ? findProduct.quantity : quantityItem[Number(findProduct.id)]}
-  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-    changeQuantity(Number(e.target.value), Number(findProduct.id))
-  }
-/>
+                  <input type="number" className="w-12" min={1} max={10} value={!quantityItem[Number(findProduct.id)] ? findProduct.quantity : quantityItem[Number(findProduct.id)]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeQuantity(Number(e.target.value), Number(findProduct.id)) } />
                 </div>
                  <div>
                   <p className='text-3xl text-center md:text-right  text-white' >

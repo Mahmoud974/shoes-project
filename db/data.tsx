@@ -361,20 +361,7 @@ const dataShoes:Data[] = [
     company: "Adidas",
     color: "black",
     category: "flats",
-  },
-   {
-    id: 28,
-    img: "https://m.media-amazon.com/images/I/519MRhRKGFL._AC_UX575_.jpg",
-    title: "Nike Air Vapormax Plus",
-    star: <AiFillStar className="rating-star" />,
-    reviews: "(123 reviews)",
-    prevPrice: "$140,00",
-    quantity: 1,
-    newPrice: "200",
-    company: "Nike",
-    color: "red",
-    category: "sneakers",
-  },
+  }
 ];
 
 export default dataShoes;

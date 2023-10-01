@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
 import React, { useEffect,  useState } from 'react'
-import { Data } from '../module/index';
+import { Data, deleteCart } from '@module/index';
 import {BiInfoCircle, BiSolidBasket} from 'react-icons/bi'
 import Link from 'next/link';
 
@@ -9,41 +9,29 @@ type Props = {
     article: Data,
     basket: string,
     setBasket: React.Dispatch<React.SetStateAction<string>>,
-    setDataFind: React.Dispatch<React.SetStateAction<string >>,
     setArticle: React.Dispatch<React.SetStateAction<string | undefined>>,
-    dataFind: any,
-    data:any
-   
 }
 
-const Card = ({article, data, setBasket, setDataFind, setArticle }: Props) => {
+const Card:React.FC<Props> = ({article, setBasket, setArticle}) => {
 const [cart, setCartItems] = useState<Data[]>([])
 const [addProduct, setAddProduct] = useState<boolean>(true)
-
-
-
-const getLocalStorageItem= (key:string)=> {
-  const storedItem = localStorage.getItem(key);
-  return storedItem ? JSON.parse(storedItem) : [];
-}
 
 const setLocalStorageItem= (key:string, data: Data[]) =>{
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-
+const getLocalStorageItem= (key:string)=> {
+const storedItem = localStorage.getItem(key);
+return storedItem ? JSON.parse(storedItem) : [];
+}
 
 useEffect(() => {
   const storedCart = getLocalStorageItem('cart');
   setCartItems(storedCart);
 }, []);
 
-
-
 const addToCart = (item: Data, title: string) => {
- 
-  const updatedCart:Data[] = [...cart, item];
-
+const updatedCart:Data[] = [...cart, item];
 const uniqueProduct = updatedCart.filter((produit, index, self) =>
   index === self.findIndex((p) => (
     p.id === produit.id &&
@@ -54,25 +42,14 @@ const uniqueProduct = updatedCart.filter((produit, index, self) =>
   setCartItems(updatedCart);
   setLocalStorageItem('cart', uniqueProduct);
 
-
   if (item) {
     setArticle(title);
-    window.location.reload();
-     setAddProduct(false)
+    setAddProduct(false)
   }
 };
 
-const deleteCart = () =>{
-   setAddProduct(true)
-    confirm('Voulez vous la supprimez?')
-   
-    
-  }
-
-
-  return (
-    
-   <div className="card  w-82 flex h-76 bg-white shadow-xl lg:mr-0 md:mx-0 mx-6"  >
+return (
+ <div className="card  w-82 flex h-76 bg-white shadow-xl lg:mr-0 md:mx-0 mx-6"  >
     <div onClick={()=> setBasket('all')} >
 <div className=" py-12 mx-auto flex  justify-center">
     <Image
@@ -115,7 +92,7 @@ const deleteCart = () =>{
                  <span className='cursor-pointer hover:text-yellow-400'>
                 <BiSolidBasket onClick={() => addToCart(article, article.title)}  />
               </span> : 
-              <button className='cursor-pointer flex justify-center bg-red-500 rounded-full mx-auto  w-[1.35rem] h-[1.35rem]  text-white text-center items-center font-bold ml-12 text-xs' onClick={() => deleteCart()} >
+              <button className='cursor-pointer flex justify-center bg-red-500 rounded-full mx-auto  w-[1.35rem] h-[1.35rem]  text-white text-center items-center font-bold ml-12 text-xs'onClick={() => deleteCart(article?.id)} >
                 X
               </button>
               }

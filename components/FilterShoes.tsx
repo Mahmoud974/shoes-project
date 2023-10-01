@@ -17,7 +17,7 @@ export default function FilterShoes({setPrice, setSecondPrice, setCategory, setC
     setSecondPrice(priceUp) 
   }
   return (
-    <div className="flex items-center justify-center border-gray-400 py-8 order-1 -my-8 ">
+    <div className="md:hidden flex  items-center justify-center border-gray-400 py-8 order-1 -my-8 " >
    
       <nav>
         <section className="MOBILE-MENU  flex lg:hidden">

@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React  from 'react'
 
 
 type Props = {
@@ -8,17 +8,16 @@ type Props = {
 }
 
 const Recommend:React.FC<Props> = ({setCompany, company}) => {
-  const styleRecommend = 'border p-2 px-12 rounded-md hover:bg-white hover:text-black cursor-pointer hover:font-bold'
- 
+  const styleRecommend = ' border p-2 px-12 rounded-md hover:bg-white hover:text-black cursor-pointer hover:font-bold'
+ let recommendArray = ["ALL", "Nike", "Adidas", "Puma", "Vans"  ]
   return (
-    <div className="">
+    <div className="md:ml-12">
       <h2 className='text-2xl lg:text-left text-center my-6 lg:my-0 font-bold'>Recommended</h2>
-      <ul className='my-6 flex lg:flex-row flex-col lg:space-x-4 lg:space-y-0 space-y-8 text-center '>
-        <li><label className={`${styleRecommend} ${company=== "ALL" ? "bg-white text-black font-bold" : ""}`}><input type="radio" name="category" id="" className='mr-2 hidden ' onClick={() => setCompany("ALL")}  />All Products</label></li>
-        <li><label  className={`${styleRecommend} ${company=== "Nike" ? "bg-white text-black font-bold" : ""}`}><input type="radio" name="category" id="" className='mr-2 hidden ' onClick={() => setCompany("Nike")} />Nike</label></li>
-        <li><label  className={`${styleRecommend} ${company=== "Adidas" ? "bg-white text-black font-bold" : ""}`}><input type="radio" name="category" id="" className='mr-2 hidden ' onClick={() => setCompany("Adidas")} />Adidas</label></li>
-        <li><label  className={`${styleRecommend} ${company=== "Puma" ? "bg-white text-black font-bold" : ""}`}><input type="radio" name="category" id="" className='mr-2 hidden ' onClick={() => setCompany("Puma")} />Puma</label></li>
-        <li><label  className={`${styleRecommend} ${company=== "Vans" ? "bg-white text-black font-bold" : ""}`}><input type="radio" name="category" id="" className='mr-2 hidden ' onClick={() => setCompany("Vans")} />Vans</label></li>
+      <ul className='my-6 flex lg:flex-row flex-col lg:space-x-4 lg:space-y-0 space-y-8 text-center'>
+       {
+          recommendArray.map((recommend:string)=> <li key={recommend}><label className={`${styleRecommend} ${company=== recommend ? "bg-white text-black font-bold" : ""}`}><input type="radio" name="category" id="" className='mr-2 hidden ' onClick={() => setCompany(recommend)}  />{recommend}</label></li>) 
+        }
+     
       </ul>
       
     </div>
